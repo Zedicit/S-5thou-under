@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Fixture: minimal_controller
+  Synthetic, hand-written. Imitates SoftwareRevision 33.01.
+  Exercises: header, one UDT with packed BOOLs, one AOI, controller and program
+  tags, ladder with JSR, one ST routine, one continuous task.
+-->
+<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="33.01" TargetName="Demo_Line" TargetType="Controller" ContainsContext="false" ExportDate="Sat Oct 10 12:00:00 2026" ExportOptions="NoRawData L5KData DecoratedData ForceProtectedEncoding AllProjDocTrans">
+<Controller Use="Target" Name="Demo_Line" ProcessorType="1756-L85E" MajorRev="33" MinorRev="11">
+<DataTypes>
+<DataType Name="Valve_UDT" Family="NoFamily" Class="User">
+<Members>
+<Member Name="ZZZZZZZZZZValve_UDT0" DataType="SINT" Dimension="0" Radix="Decimal" Hidden="true" ExternalAccess="Read/Write"/>
+<Member Name="Open" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZValve_UDT0" BitNumber="0" ExternalAccess="Read/Write"/>
+<Member Name="Closed" DataType="BIT" Dimension="0" Radix="Decimal" Hidden="false" Target="ZZZZZZZZZZValve_UDT0" BitNumber="1" ExternalAccess="Read/Write"/>
+<Member Name="Travel" DataType="TIMER" Dimension="0" Radix="NullType" Hidden="false" ExternalAccess="Read/Write"/>
+</Members>
+</DataType>
+</DataTypes>
+<AddOnInstructionDefinitions>
+<AddOnInstructionDefinition Name="ValveCtl" Revision="1.0" ExecutePrescan="false" ExecutePostscan="false" ExecuteEnableInFalse="false">
+<Parameters>
+<Parameter Name="EnableIn" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only"/>
+<Parameter Name="EnableOut" TagType="Base" DataType="BOOL" Usage="Output" Radix="Decimal" Required="false" Visible="false" ExternalAccess="Read Only"/>
+<Parameter Name="Cmd" TagType="Base" DataType="BOOL" Usage="Input" Radix="Decimal" Required="true" Visible="true" ExternalAccess="Read/Write"/>
+<Parameter Name="Valve" TagType="Base" DataType="Valve_UDT" Usage="InOut" Required="true" Visible="true" Constant="false"/>
+</Parameters>
+<Routines>
+<Routine Name="Logic" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Text><![CDATA[XIC(Cmd)OTE(Valve.Open);]]></Text>
+</Rung>
+</RLLContent>
+</Routine>
+</Routines>
+</AddOnInstructionDefinition>
+</AddOnInstructionDefinitions>
+<Tags>
+<Tag Name="StartPB" TagType="Base" DataType="BOOL" Radix="Decimal" Constant="false" ExternalAccess="Read/Write"/>
+</Tags>
+<Programs>
+<Program Name="Filler" TestEdits="false" MainRoutineName="Main" Disabled="false" UseAsFolder="false">
+<Tags>
+<Tag Name="Step" TagType="Base" DataType="DINT" Radix="Decimal" Constant="false" ExternalAccess="Read/Write"/>
+<Tag Name="FillValve" TagType="Base" DataType="Valve_UDT" Constant="false" ExternalAccess="Read/Write"/>
+<Tag Name="FillValve_Ctl" TagType="Base" DataType="ValveCtl" Constant="false" ExternalAccess="Read/Write"/>
+</Tags>
+<Routines>
+<Routine Name="Main" Type="RLL">
+<RLLContent>
+<Rung Number="0" Type="N">
+<Comment><![CDATA[Call the sequence every scan.]]></Comment>
+<Text><![CDATA[JSR(Sequence,0);]]></Text>
+</Rung>
+</RLLContent>
+</Routine>
+<Routine Name="Sequence" Type="ST">
+<STContent>
+<Line Number="0"><![CDATA[CASE Step OF]]></Line>
+<Line Number="1"><![CDATA[  0:  IF StartPB THEN Step := 10; END_IF;]]></Line>
+<Line Number="2"><![CDATA[  10: ValveCtl(FillValve_Ctl, 1, FillValve);]]></Line>
+<Line Number="3"><![CDATA[      IF FillValve.Travel.DN THEN Step := 20; END_IF;]]></Line>
+<Line Number="4"><![CDATA[  20: Step := 0;]]></Line>
+<Line Number="5"><![CDATA[END_CASE;]]></Line>
+</STContent>
+</Routine>
+</Routines>
+</Program>
+</Programs>
+<Tasks>
+<Task Name="MainTask" Type="CONTINUOUS" Priority="10" Watchdog="500" DisableUpdateOutputs="false" InhibitTask="false">
+<ScheduledPrograms>
+<ScheduledProgram Name="Filler"/>
+</ScheduledPrograms>
+</Task>
+</Tasks>
+</Controller>
+</RSLogix5000Content>

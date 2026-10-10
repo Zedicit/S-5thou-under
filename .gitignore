@@ -1,0 +1,13 @@
+/target
+**/*.rs.bk
+*.s5kidx
+/report/
+# Never commit real controller projects. Fixtures go in tests/fixtures/ after review.
+*.ACD
+*.acd
+*.L5K
+*.l5k
+*.L5X
+*.l5x
+!tests/fixtures/**/*.L5X
+!tests/fixtures/**/*.l5x

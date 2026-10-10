@@ -1,0 +1,15 @@
+[package]
+name = "s5k-analysis"
+description = "Type resolution, cross-reference, call graph and sequence extraction"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+s5k-model.workspace = true
+s5k-logic.workspace = true
+
+[lints]
+workspace = true

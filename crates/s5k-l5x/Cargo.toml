@@ -1,0 +1,16 @@
+[package]
+name = "s5k-l5x"
+description = "Streaming reader for Studio 5000 L5X exports"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+s5k-model.workspace = true
+quick-xml.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true
