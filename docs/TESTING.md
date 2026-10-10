@@ -22,6 +22,15 @@
   `SoftwareRevision` it imitates.
 - Large generated fixtures are not committed; CI generates them.
 
+## Current fixtures
+
+| Fixture | Exercises |
+|---|---|
+| `minimal_controller.L5X` | Smallest full project: UDT, AOI, tags, ladder + ST, one task |
+| `multi_program_output.L5X` | ADR-0002 scenario: one output driven from three programs via parameter connection, alias to module point, consumed tag; modules, protected AOI/routine, SFC, FBD, localized description, pending edit, unknown element |
+| `partial_routine_export.L5X` | Routine export with context (`Use="Target"`/`"Context"`) |
+| generated (`cargo xtask gen-fixture`) | Size/performance; not committed |
+
 ## Naming
 
 Tests that cover a requirement include its ID: `fr_par_007_partial_routine_export`.

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Fixture: partial_routine_export
+  Synthetic, hand-written. Imitates SoftwareRevision 33.01.
+  A single routine exported with context (FR-PAR-007): the program and its
+  tags are context, the routine is the target.
+-->
+<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="33.01" TargetName="Seq_ST" TargetType="Routine" TargetSubType="ST" ContainsContext="true" ExportDate="Sat Oct 10 12:00:00 2026" ExportOptions="References NoRawData L5KData DecoratedData Context RoutineLabels AliasReferences IOTags NoStringData ForceProtectedEncoding AllProjDocTrans">
+<Controller Use="Context" Name="Conveyor_Line">
+<DataTypes Use="Context">
+</DataTypes>
+<Tags Use="Context">
+<Tag Name="Line_Permissive" TagType="Base" DataType="BOOL" Radix="Decimal" Constant="false" ExternalAccess="Read/Write" Use="Context"/>
+</Tags>
+<Programs Use="Context">
+<Program Use="Context" Name="Sequencer">
+<Tags Use="Context">
+<Tag Name="Step" TagType="Base" DataType="DINT" Radix="Decimal" Constant="false" ExternalAccess="Read/Write" Use="Context"/>
+</Tags>
+<Routines Use="Context">
+<Routine Use="Target" Name="Seq_ST" Type="ST">
+<STContent>
+<Line Number="0"><![CDATA[IF Line_Permissive THEN Step := 10; END_IF;]]></Line>
+</STContent>
+</Routine>
+</Routines>
+</Program>
+</Programs>
+</Controller>
+</RSLogix5000Content>

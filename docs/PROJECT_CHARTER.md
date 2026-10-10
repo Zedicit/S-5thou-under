@@ -6,6 +6,10 @@ Give controls engineers, maintenance staff, integrators and reviewers a fast,
 offline way to understand what a Rockwell Logix controller program does, by
 turning a Studio 5000 `.L5X` export into navigable diagrams and cross-references.
 
+The guiding question is **"how does this output turn on?"**, answered across the
+whole project, because a process is rarely contained in a single program
+(ADR-0002).
+
 ## 2. Problem statement
 
 - Logix projects are large: hundreds of routines, tens of thousands of rungs,
@@ -26,6 +30,7 @@ turning a Studio 5000 `.L5X` export into navigable diagrams and cross-references
 | G5 | Generate diagrams: call tree, data-type composition, SFC charts, and sequence/state charts derived from ladder/ST step patterns. |
 | G6 | Handle large projects (100+ MB L5X) with bounded memory, progress reporting and a reusable cache. |
 | G7 | Produce a static HTML report that links all diagrams and cross-references. |
+| G8 | **Output trace:** from any output (module point or tag), show every writer and, recursively, the conditions and tags that drive it, across programs, tasks, AOIs, aliases, program parameters and I/O modules. |
 
 ## 4. Non-goals (v1.0)
 

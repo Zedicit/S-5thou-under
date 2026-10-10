@@ -31,6 +31,23 @@ pub struct Diagnostic {
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Diagnostics(Vec<Diagnostic>);
 
+impl Diagnostic {
+    /// Build a diagnostic.
+    pub fn new(
+        severity: Severity,
+        code: &str,
+        message: impl Into<String>,
+        offset: Option<u64>,
+    ) -> Self {
+        Self {
+            severity,
+            code: code.to_owned(),
+            message: message.into(),
+            offset,
+        }
+    }
+}
+
 impl Diagnostics {
     /// Record a diagnostic.
     pub fn push(&mut self, d: Diagnostic) {
@@ -40,6 +57,21 @@ impl Diagnostics {
     /// All diagnostics in the order they were recorded.
     pub fn iter(&self) -> impl Iterator<Item = &Diagnostic> {
         self.0.iter()
+    }
+
+    /// Number of diagnostics.
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
+    /// True when nothing was recorded.
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+
+    /// Number of diagnostics at a given severity.
+    pub fn count(&self, severity: Severity) -> usize {
+        self.0.iter().filter(|d| d.severity == severity).count()
     }
 
     /// Highest severity recorded, if any.

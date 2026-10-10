@@ -53,3 +53,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: EmbarkStudios/cargo-deny-action@v2
+
+  perf-smoke:
+    # Guards NFR-PERF-001 for the structural parse (M1 target: 100 MB in < 20 s).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release -p s5k-cli -p xtask
+      - run: ./target/release/xtask gen-fixture --size-mb 100 -o big.L5X
+      - name: Parse 100 MB within budget
+        run: timeout 20s ./target/release/s5k inspect -q big.L5X

@@ -12,13 +12,13 @@ Resolve an item by moving it into `REQUIREMENTS.md` or an ADR.
 
 | # | Question | Proposed default |
 |---|---|---|
-| A1 | Which chart types matter most? "Flow chart" and "sequence chart" can mean a routine call tree, a machine state machine, a ladder-rung flowchart, or a UML sequence diagram between programs. | Priority: (1) call tree, (2) SFC/step state charts, (3) UDT composition, (4) inter-program sequence diagram, (5) per-routine logic flowchart. |
+| A1 | ~~Which chart types matter most?~~ **Resolved:** proposed order accepted; output trace is the guiding goal (ADR-0002). "Flow chart" and "sequence chart" can mean a routine call tree, a machine state machine, a ladder-rung flowchart, or a UML sequence diagram between programs. | Priority: (1) call tree, (2) SFC/step state charts, (3) UDT composition, (4) inter-program sequence diagram, (5) per-routine logic flowchart. |
 | A2 | Who reads the output: engineers in Studio 5000, managers, or auditors? | Engineers. Labels use tag names plus descriptions. |
 | A3 | Output medium: text files (Mermaid/DOT), images (SVG/PNG), or an interactive viewer? | Text formats plus a static HTML report with pre-rendered SVG. |
 | A4 | Studio 5000 versions to support? | v20 to current. |
 | A5 | Are real (sanitized) project files available for testing? | Critical. Without them, synthetic fixtures only and higher risk. |
 | A6 | Library, CLI, or GUI? | CLI + library crates first; GUI/web later. |
-| A7 | License (MIT/Apache-2.0, GPL, proprietary)? | Unset until decided. MIT OR Apache-2.0 is the Rust norm. |
+| A7 | ~~License?~~ **Resolved:** MIT. | |
 | A8 | Naming conventions in your projects (step tags, sequence routines)? These drive sequence heuristics. | Configurable through `s5k.toml`. |
 | A9 | Safety programs (GuardLogix safety task) in scope? | Parse and show; mark as safety; no special analysis. |
 

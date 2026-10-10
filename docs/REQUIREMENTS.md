@@ -20,10 +20,12 @@ IDs are stable. Reference them in issues, commits and tests (for example
 | FR-PAR-008 | M | Read `Tasks`: type (continuous/periodic/event), period, priority, watchdog, scheduled programs and their order. |
 | FR-PAR-009 | M | Keep routine bodies for all four languages: RLL rungs (neutral text + comments), ST lines, FBD sheets, SFC content. |
 | FR-PAR-010 | M | Detect source-protected or encoded content (`EncodedData`, `SourceProtected`) and mark it opaque instead of failing. |
-| FR-PAR-011 | S | Read `Modules` (I/O tree), so module-defined tag types (e.g. `Local:1:I`) resolve. |
+| FR-PAR-011 | M | Read `Modules` (I/O tree: catalog number, parent, ports/slots, connections), so module I/O tags (e.g. `Local:1:O`) resolve to physical points. Promoted to M by ADR-0002. |
 | FR-PAR-012 | S | Read decorated tag data (`Format="Decorated"`) for initial values; keep `Format="L5K"` data as raw text. |
 | FR-PAR-013 | C | Read L5K input (see ADR-0001). |
 | FR-PAR-014 | M | Unknown elements/attributes produce a warning with location, never a failure. |
+| FR-PAR-015 | M | Report parse progress (bytes read / total) through a callback; the library never draws UI. |
+| FR-PAR-016 | C | Load several L5X files (several controllers) into one workspace so produced/consumed tags link across controllers. |
 
 ### Logic parsing (FR-LOG)
 
@@ -53,6 +55,9 @@ IDs are stable. Reference them in issues, commits and tests (for example
 | FR-ANA-010 | S | Inter-program communication: program parameters, produced/consumed tags, controller-scope tags used by more than one program, MSG instructions. |
 | FR-ANA-011 | C | Diff two models: added/removed/changed routines, rungs, tags and types. |
 | FR-ANA-012 | C | Lint-style findings: duplicate destructive writes (OTE to same bit in two places), unused tags, unused routines, never-written tags that are read. |
+| FR-ANA-013 | M | **Output trace** (ADR-0002): for a tag, member or module output point, build the backward graph writers → conditions → read tags → their writers, across programs, AOIs (incl. InOut), aliases, program parameters, JSR parameters and module I/O, with depth limit and cycle detection. |
+| FR-ANA-014 | M | Classify each write: non-retentive (`OTE`), latch/unlatch (`OTL`/`OTU`), value (`MOV`, `:=`, `COP` ...), instruction-owned (timer/counter bits, AOI outputs). Flag outputs with more than one non-retentive writer. |
+| FR-ANA-015 | M | Annotate each writer with its scheduling context (task, program, call path) and reachability. |
 
 ### Output (FR-OUT)
 
@@ -65,12 +70,13 @@ IDs are stable. Reference them in issues, commits and tests (for example
 | FR-OUT-005 | S | Static HTML report: project overview, per-program pages, diagrams, searchable cross-reference. Works offline, no server. |
 | FR-OUT-006 | M | Diagram scoping: by task/program/routine, depth limit, include/exclude patterns, collapse AOIs. |
 | FR-OUT-007 | M | Diagram labels can use tag/rung descriptions; every node links back to source location. |
+| FR-OUT-008 | M | Output-trace diagram: flowchart grouped by program, writers as nodes with write kind, conditions as edges/labels. |
 
 ### CLI (FR-CLI)
 
 | ID | Pri | Requirement |
 |---|---|---|
-| FR-CLI-001 | M | Subcommands: `inspect`, `index`, `graph`, `xref`, `report`, `validate`. |
+| FR-CLI-001 | M | Subcommands: `inspect`, `index`, `graph`, `xref`, `trace`, `report`, `validate`. |
 | FR-CLI-002 | M | Progress bar for long operations; `--quiet` and `--json` modes for scripting. |
 | FR-CLI-003 | M | Exit codes: 0 success, 1 diagnostics at `error` level, 2 usage error, 3 I/O or parse failure. |
 | FR-CLI-004 | S | Config file (`s5k.toml`) for sequence-pattern rules, naming conventions and diagram defaults. |

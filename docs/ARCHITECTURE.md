@@ -131,7 +131,21 @@ configurable:
 Users can declare step tags explicitly in `s5k.toml` when heuristics miss or
 over-detect. Every extracted state and transition links to its source rung or line.
 
-## 7. Extensibility
+## 7. Output trace (ADR-0002)
+
+The trace is a query over two whole-project facts built in M4:
+
+- **xref**: for every resolved tag path, its readers and writers with write kind and location;
+- **binding edges**: alias → base, AOI argument ↔ parameter (InOut is a reference), JSR
+  input/return parameters, program parameter connections, module I/O tag → module point.
+
+`trace(target)` walks writers of `target`; for each writer it collects the tags read
+in the same rung/line condition (branch-aware for ladder, the enclosing IF/CASE
+conditions for ST), and recurses on those tags, following binding edges in both
+directions where they are references. The result is a DAG with cycle markers that
+renderers draw grouped by program.
+
+## 8. Extensibility
 
 - New output format: implement `trait Renderer { fn render(&self, g: &Graph, opts) -> String }`.
 - New input format (L5K, later): produce the same `s5k-model::Project`; nothing

@@ -7,10 +7,12 @@
 
 mod diagnostics;
 mod name;
+pub mod project;
 mod types;
 
 pub use diagnostics::{Diagnostic, Diagnostics, Severity};
 pub use name::Name;
+pub use project::*;
 pub use types::{AtomicType, TypeCategory};
 
 use serde::{Deserialize, Serialize};

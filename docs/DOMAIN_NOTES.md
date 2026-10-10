@@ -23,6 +23,7 @@ it came from.
     <Tags>                 <Tag .../>*      </Tags>          <!-- controller scope -->
     <Programs>             <Program .../>*  </Programs>
     <Tasks>                <Task .../>*     </Tasks>
+    <ParameterConnections> <ParameterConnection EndPoint1="\P1.Out" EndPoint2="\P2.In"/>* </ParameterConnections>
     <CST/> <WallClockTime/> <Trends/> <QuickWatchLists/> <TimeSynchronize/> ...
   </Controller>
 </RSLogix5000Content>
@@ -180,4 +181,4 @@ Module ──defines──► module-defined types + I/O tags (Local:slot:I/O/C)
 
 | SoftwareRevision | Source | Notes |
 |---|---|---|
-| _tbd_ | | |
+| 32.02, 33.01 | Synthetic fixtures only | Real-file confirmation still needed (OPEN_QUESTIONS A5) |

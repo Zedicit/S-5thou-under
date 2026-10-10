@@ -5,8 +5,23 @@ Studio 5000 Logix Designer project exports (`.L5X`) and turns them into
 diagrams people can read: call graphs, sequence/state charts, data-flow and
 data-type diagrams.
 
-> Status: **pre-alpha, design phase.** The workspace compiles, but the crates
-> are mostly stubs. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+> Status: **pre-alpha.** Milestone M1 (structural parse) is done: `s5k inspect`
+> reads a full L5X project. Logic parsing, cross-reference and output tracing
+> are next. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+## Primary question: how does this output turn on?
+
+The main use case is tracing a physical or logical output back to everything
+that controls it: the rungs and ST lines that write it, the conditions on those
+rungs, the tags those conditions read, and so on, across **all** programs,
+tasks, AOIs, aliases, program parameters and I/O modules. A machine process is
+usually spread over several programs, so the tool always analyses the whole
+project, never one program in isolation. See
+[`docs/adr/0002-output-centric-whole-project-analysis.md`](docs/adr/0002-output-centric-whole-project-analysis.md).
+
+```text
+s5k trace project.s5kidx --output Local:4:O.Data.3     # why/how does this output turn on?
+```
 
 ## Why
 
@@ -19,7 +34,7 @@ that question offline, from the export file alone.
 ## Planned usage
 
 ```text
-s5k inspect  project.L5X                       # summary: controller, tasks, programs, counts
+s5k inspect  project.L5X                       # summary: controller, tasks, programs, counts (works today)
 s5k index    project.L5X -o project.s5kidx     # parse once, cache the analysed model
 s5k graph    project.s5kidx --kind call-tree   --format mermaid
 s5k graph    project.s5kidx --kind sequence    --program Filler --format plantuml
@@ -51,8 +66,17 @@ crates/
   s5k-analysis  Type resolution, symbol tables, cross-reference, call graph, sequence extraction
   s5k-render    Diagram back-ends: Mermaid, Graphviz DOT, PlantUML, HTML report
   s5k-cli       The `s5k` binary
+xtask/          Developer tasks (synthetic fixture generator)
 docs/           Charter, requirements, architecture, domain notes, roadmap, ADRs
 tests/fixtures  Small, sanitized L5X samples (never commit customer projects)
+```
+
+## Try it
+
+```bash
+cargo run --release -p s5k-cli -- inspect tests/fixtures/multi_program_output.L5X -v
+cargo run --release -p s5k-cli -- inspect project.L5X --json > model.json
+cargo xtask gen-fixture --size-mb 100 -o target/big.L5X     # synthetic large file
 ```
 
 ## Building
@@ -75,6 +99,7 @@ cargo fmt --all -- --check
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Milestones and exit criteria |
 | [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) | Decisions still needed, gaps in the original brief |
 | [`docs/TESTING.md`](docs/TESTING.md) | Test strategy, fixture policy, benchmarks |
+| [`docs/DIAGNOSTICS.md`](docs/DIAGNOSTICS.md) | Diagnostic codes and CLI exit codes |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Workflow, commit and code conventions |
 
 ## Disclaimer
@@ -85,4 +110,4 @@ This tool only reads export files; it never connects to a controller.
 
 ## License
 
-To be decided. See [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md).
+MIT. See [`LICENSE`](LICENSE).

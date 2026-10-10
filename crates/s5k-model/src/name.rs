@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// Logix names are case-insensitive, so equality and hashing ignore ASCII case
 /// while the original spelling is kept for display.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Name(String);
 
 impl Name {
